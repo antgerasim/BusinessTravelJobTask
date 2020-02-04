@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "ClientApp/src/components/FetchData.min.js",
+    "inputFiles": [
+      "ClientApp/src/components/FetchData.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/src/components/NavMenu.min.js",
+    "inputFiles": [
+      "ClientApp/src/components/NavMenu.js"
+    ]
+  }
+]
