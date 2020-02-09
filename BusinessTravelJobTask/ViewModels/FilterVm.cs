@@ -106,7 +106,7 @@ namespace BusinessTravelJobTask.ViewModels
         }
 
         [DataContract]
-        public class Data
+        public class Data :IData
         {
             [DataMember]
             public List<Link> links { get; set; }
@@ -115,7 +115,7 @@ namespace BusinessTravelJobTask.ViewModels
         }
 
         [DataContract]
-        public class FilterRootObject
+        public class FilterRootObject : IRootObject
         {
             [DataMember]
             public bool success { get; set; }
@@ -123,6 +123,7 @@ namespace BusinessTravelJobTask.ViewModels
             public Data data { get; set; }
             [DataMember]
             public int elapsedMilliseconds { get; set; }
+            
         }
     }
 }

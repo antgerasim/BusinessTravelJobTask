@@ -29,7 +29,10 @@ export class TravelJobTask extends Component {
         });
 
         fetch(apiUrl)
-            .then(res => res.json())
+            .then(res => 
+               // console.log(res);
+                res.json()
+            )
             .then(
             (result) => {
 
@@ -37,7 +40,7 @@ export class TravelJobTask extends Component {
 
                     this.setState({
                         isLoaded: true,
-                        items: result
+                        items: result.items
                     });
                 },
                 (error) => {

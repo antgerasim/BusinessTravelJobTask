@@ -1,7 +1,9 @@
 ﻿using BusinessTravelJobTask.Cache;
+using BusinessTravelJobTask.Services;
 using BusinessTravelJobTask.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -38,17 +40,9 @@ namespace BusinessTravelJobTask.Controllers
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     var jsonReader = new JsonTextReader(new StreamReader(responseStream));
-                    var rootObj = JsonSerializer.Create().Deserialize<SearchRootObject>(jsonReader);
-                    var retVal = rootObj.data.items.Select(item => new TravelData
-                    {
-                        TourDate = item.tour.tourDate.ToShortDateString(),
-                        HotelName = item.hotels.FirstOrDefault()?.name,
-                        RoomName = item.hotels.FirstOrDefault()?.room.name,
-                        MealType = item.hotels.FirstOrDefault()?.mealType.name,
-                        Price = item.price.value,
-                        Currency = item.price.currencyCode
-                    }).ToList();
-
+                    var serResult = JsonSerializer.Create().Deserialize<SearchRootObject>(jsonReader);
+                    var service = new TravelDataService<SearchRootObject>( SearchFunc);
+                    var retVal = service.ProcessTravelData(serResult);
                     return Ok(retVal);
                 }
             }
@@ -65,18 +59,40 @@ namespace BusinessTravelJobTask.Controllers
             //add requestheaders ??...
             var client = _clientFactory.CreateClient(); //new HttpClient
             var response = await client.SendAsync(request);
-
             if (response.IsSuccessStatusCode)
             {
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     var jsonReader = new JsonTextReader(new StreamReader(responseStream));
-                    var rootObj = JsonSerializer.Create().Deserialize<FilterRootObject>(jsonReader);
-                    //JsonConvert.DeserializeObject<RootObject>(myString);
-                    return Ok(rootObj);
+                    var serResult = JsonSerializer.Create().Deserialize<FilterRootObject>(jsonReader);
+                    var service = new TravelDataService<FilterRootObject>(FilterFunc);
+                    var retVal = service.ProcessTravelData(serResult);
+                    return Ok(retVal);
                 }
             }
             return NotFound();
+        }
+        //Todo make factories
+        private static FilterRootObject FilterFunc(FilterRootObject rootObj)
+        {
+            return rootObj;
+        }
+
+        private static SearchRootObject SearchFunc(SearchRootObject rootObj)
+        {            
+            rootObj.items = rootObj.data.items.Select(item => new TravelDataItem
+            {
+                TourDate = item.tour.tourDate.ToShortDateString(),
+                HotelName = item.hotels.FirstOrDefault()?.name,
+                RoomName = item.hotels.FirstOrDefault()?.room.name,
+                MealType = item.hotels.FirstOrDefault()?.mealType.name,
+                Price = item.price.value,
+                Currency = item.price.currencyCode
+            }).ToList();
+
+            rootObj.data = null;
+
+            return rootObj;
         }
     }
 }

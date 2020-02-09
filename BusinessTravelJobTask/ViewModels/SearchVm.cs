@@ -317,7 +317,7 @@ namespace BusinessTravelJobTask.ViewModels
             public FlightsDetails flightsDetails { get; set; }
         }
         [DataContract]
-        public class Data
+        public class Data : IData
         {
             [DataMember]
             public List<Item> items { get; set; }
@@ -327,7 +327,7 @@ namespace BusinessTravelJobTask.ViewModels
             public int total { get; set; }
         }
         [DataContract]
-        public class SearchRootObject
+        public class SearchRootObject : IRootObject
         {
             [DataMember]
             public bool success { get; set; }
@@ -335,6 +335,9 @@ namespace BusinessTravelJobTask.ViewModels
             public Data data { get; set; }
             [DataMember]
             public int elapsedMilliseconds { get; set; }
+            [DataMember]
+            public IList<TravelDataItem> items { get; set; }
+
         }
 
     }
