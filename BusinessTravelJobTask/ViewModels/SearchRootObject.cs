@@ -4,7 +4,7 @@ using static BusinessTravelJobTask.ViewModels.SearchVm;
 namespace BusinessTravelJobTask.ViewModels
 {
     [DataContract]
-    public class SearchRootObject : IRootObject
+    public class SearchRoot : IRootObject
     {
         [DataMember]
         public bool success { get; set; }

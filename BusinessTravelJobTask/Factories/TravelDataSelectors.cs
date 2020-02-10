@@ -12,7 +12,7 @@ namespace BusinessTravelJobTask.Factories
    internal static class TravelDataSelectors
     {
         
-        internal static TravelDataResult FilterFunc(FilterRootObject rootObj)
+        internal static TravelDataResult FilterFunc(FilterRoot rootObj)
         {
             dynamic data = new ExpandoObject();
             data.countries = rootObj.data.dictionaries.countries as IList<Country2>;
@@ -28,7 +28,7 @@ namespace BusinessTravelJobTask.Factories
             return resultObj;
         }
 
-        internal static TravelDataResult SearchFunc(SearchRootObject rootObj)
+        internal static TravelDataResult SearchFunc(SearchRoot rootObj)
         {
             var resultObj = new TravelDataResult()
             {

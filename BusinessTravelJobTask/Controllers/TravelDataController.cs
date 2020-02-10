@@ -14,12 +14,12 @@ namespace BusinessTravelJobTask.Controllers
     public class TravelDataController : Controller
     {
         private readonly IHttpClientFactory _clientFactory;
-        private readonly ITravelDataService<FilterRootObject, TravelDataResult> _filterService;
-        private readonly ITravelDataService<SearchRootObject, TravelDataResult> _searchService;
+        private readonly ITravelDataService<FilterRoot, TravelDataResult> _filterService;
+        private readonly ITravelDataService<SearchRoot, TravelDataResult> _searchService;
 
         public TravelDataController(IHttpClientFactory clientFactory,
-            ITravelDataService<FilterRootObject, TravelDataResult> filterService,
-            ITravelDataService<SearchRootObject, TravelDataResult> searchService
+            ITravelDataService<FilterRoot, TravelDataResult> filterService,
+            ITravelDataService<SearchRoot, TravelDataResult> searchService
             )
         {
             _clientFactory = clientFactory;
@@ -38,7 +38,7 @@ namespace BusinessTravelJobTask.Controllers
             var client = _clientFactory.CreateClient();
             var response = await client.SendAsync(request);
 
-            return await GetActionResult(response, typeof(FilterRootObject));
+            return await GetActionResult<FilterRoot>(response);
         }
 
         // GET: api/<controller>
@@ -51,35 +51,35 @@ namespace BusinessTravelJobTask.Controllers
             var client = _clientFactory.CreateClient();
             var response = await client.SendAsync(request);
 
-            return await GetActionResult(response, typeof(SearchRootObject));
+            return await GetActionResult<SearchRoot>(response);
         }
 
-        private async Task<IActionResult> GetActionResult(HttpResponseMessage response, Type rootObjectType)
+        private async Task<IActionResult> GetActionResult<TRoot>(HttpResponseMessage response)
         {
             if (response.IsSuccessStatusCode)
             {
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     var jsonReader = new JsonTextReader(new StreamReader(responseStream));
-
-                    TravelDataResult retVal = default(TravelDataResult);
+                    var rootObjectType = typeof(TRoot);
+                    var retVal = default(TravelDataResult);
 
                     switch (true)
                     {
-                        case true when typeof(FilterRootObject).IsAssignableFrom(rootObjectType):
-                            var filterResult = JsonSerializer.Create().Deserialize<FilterRootObject>(jsonReader);
+                        case true when typeof(FilterRoot).IsAssignableFrom(rootObjectType):
+                            var filterResult = JsonSerializer.Create().Deserialize<FilterRoot>(jsonReader);
                             retVal = _filterService.ProcessTravelData(TravelDataSelectors.FilterFunc, filterResult);
                             return Ok(retVal);
 
-                        case true when typeof(SearchRootObject).IsAssignableFrom(rootObjectType):
-                            var serchResult = JsonSerializer.Create().Deserialize<SearchRootObject>(jsonReader);
+                        case true when typeof(SearchRoot).IsAssignableFrom(rootObjectType):
+                            var serchResult = JsonSerializer.Create().Deserialize<SearchRoot>(jsonReader);
                             retVal = _searchService.ProcessTravelData(TravelDataSelectors.SearchFunc, serchResult);
                             return Ok(retVal);
 
                         default:
                             var paramName = rootObjectType.FullName;
                             throw new ArgumentException(
-                                message: $"{paramName} is not a recognized RootObject",
+                                message: $"{paramName} неизвестный тип",
                                 paramName: paramName);
                     }
                 }

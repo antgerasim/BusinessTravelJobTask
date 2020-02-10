@@ -4,7 +4,7 @@ using static BusinessTravelJobTask.ViewModels.FilterVm;
 namespace BusinessTravelJobTask.ViewModels
 {
     [DataContract]
-    public class FilterRootObject : IRootObject
+    public class FilterRoot : IRootObject
     {
         [DataMember]
         public bool success { get; set; }
