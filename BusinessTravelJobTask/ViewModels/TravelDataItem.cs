@@ -1,24 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace BusinessTravelJobTask.ViewModels
 {
-    public class TravelDataRoot : IRootObject
+    [DataContract]
+    public class TravelDataItem 
     {
-        public IList<TravelDataItem> Items { get; set; }
-    }
-
-    public class TravelDataItem
-    {
+        [DataMember]
         public string TourDate { get; set; }
+        [DataMember]
         public string HotelName { get; set; }
+        [DataMember]
         public string RoomName { get; set; }
+        [DataMember]
         public string MealType { get; set; }
+        [DataMember]
         public double Price { get; set; }
+        [DataMember]
         public string Currency { get; set; }
-        public int elapsedMilliseconds { get; set; }
-        public bool success { get; set; }
     }
 }

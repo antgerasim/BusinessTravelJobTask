@@ -106,24 +106,12 @@ namespace BusinessTravelJobTask.ViewModels
         }
 
         [DataContract]
-        public class Data :IData
+        public class Data
         {
             [DataMember]
             public List<Link> links { get; set; }
             [DataMember]
             public Dictionaries dictionaries { get; set; }
-        }
-
-        [DataContract]
-        public class FilterRootObject : IRootObject
-        {
-            [DataMember]
-            public bool success { get; set; }
-            [DataMember]
-            public Data data { get; set; }
-            [DataMember]
-            public int elapsedMilliseconds { get; set; }
-            
         }
     }
 }

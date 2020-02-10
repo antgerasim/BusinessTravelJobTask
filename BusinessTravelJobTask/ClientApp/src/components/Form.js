@@ -27,10 +27,10 @@ export class Form extends Component {
 
         fetch(apiUrl)
             .then(response => response.json())
-            .then(json => {
-
-                var countries = json.data.dictionaries.countries;
-                var cities = json.data.dictionaries.departureCities;
+            .then(travelDataResult => {
+                console.log(travelDataResult);
+                var countries = travelDataResult.data.countries;
+                var cities = travelDataResult.data.departureCities;
                 var dateFromObj = this.convertDateFrom(1);
                 var dateToObj = this.convertDateTo(dateFromObj, 2);
 

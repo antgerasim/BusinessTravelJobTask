@@ -1,29 +1,16 @@
 ﻿using BusinessTravelJobTask.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using static BusinessTravelJobTask.ViewModels.FilterVm;
 
 namespace BusinessTravelJobTask.Services
 {
-    public class TravelDataService<TRootObject> where TRootObject : IRootObject
+    public class TravelDataService<TRootObject, TResultObject> : ITravelDataService<TRootObject, TResultObject> where TRootObject : IRootObject
+    where TResultObject : ITravelDataResult
     {
 
-        private Func<TRootObject, TRootObject> Reduce;
+        public TResultObject ProcessTravelData(Func<TRootObject, TResultObject> process, TRootObject sourceRoot)
+        {
+            var resultRoot = process(sourceRoot);
 
-        public TravelDataService(Func<TRootObject, TRootObject> reduce)
-        {
-            Reduce = reduce;
-        }
-        public TRootObject ProcessTravelData(TRootObject sourceRoot)
-        {
-            var resultRoot = Reduce(sourceRoot);
-           
             return resultRoot;
         }
     }

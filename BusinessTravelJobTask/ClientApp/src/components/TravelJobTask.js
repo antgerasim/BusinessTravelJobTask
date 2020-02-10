@@ -34,13 +34,13 @@ export class TravelJobTask extends Component {
                 res.json()
             )
             .then(
-            (result) => {
+            (travelDataResult) => {
 
-                console.log(result);
+                console.log(travelDataResult);
 
                     this.setState({
                         isLoaded: true,
-                        items: result.items
+                        items: travelDataResult.data
                     });
                 },
                 (error) => {

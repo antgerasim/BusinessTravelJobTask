@@ -232,3 +232,7 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# CUSTOM IGNORE
+# Visual Studio LightSwitch build output
+**/.vs
