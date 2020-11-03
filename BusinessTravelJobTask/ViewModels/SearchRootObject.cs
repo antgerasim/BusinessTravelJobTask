@@ -11,6 +11,6 @@ namespace BusinessTravelJobTask.ViewModels
         [DataMember]
         public int elapsedMilliseconds { get; set; }
         [DataMember]
-        public Data data { get; set; }
+        public SearchVm.Data data { get; set; }
     }
 }

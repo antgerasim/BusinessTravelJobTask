@@ -12,7 +12,8 @@ export class Form extends Component {
             countries: [],
             cities: [],
             selectedCity: 1,
-            selectedCountry: 29
+            selectedCountry: 29,
+            hasError: false
         };
 
         //console.log(this.state);
@@ -26,7 +27,10 @@ export class Form extends Component {
         console.log(apiUrl);
 
         fetch(apiUrl)
+            //.then(response => { this.handleErrors(response) })
             .then(response => response.json())
+            //.then(response => { console.log(response) })
+
             .then(travelDataResult => {
                 console.log(travelDataResult);
                 var countries = travelDataResult.data.countries;
@@ -38,12 +42,28 @@ export class Form extends Component {
                     countries: countries,
                     cities: cities,
                     dateFrom: this.dateToString(dateFromObj),
-                    dateTo: this.dateToString(dateToObj)
+                    dateTo: this.dateToString(dateToObj),
+                    hasError: false
                 });
 
                 console.log(this.state);
-            });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                this.setState({
+                    hasError: true,
+                    errorInfo: "The server returned 404. Please verify your Data-API URL!"
+                });
+            })
             
+    }
+
+    handleErrors(response) {
+        if (!response.ok) {
+
+            throw Error(response.statusText);
+        }
+        return response;
     }
 
     convertDateFrom(nMonth) {
@@ -78,6 +98,14 @@ export class Form extends Component {
     }
 
     render() {
+        if (this.state.hasError) {
+            return (
+                <label>
+                    {this.state.errorInfo}
+                </label>
+
+                );
+        }
         return (
             <form onSubmit={this.handleSubmit}>
                 <label>
@@ -110,4 +138,6 @@ export class Form extends Component {
             </form >
         );
     }
+
+
 }

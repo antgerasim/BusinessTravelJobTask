@@ -32,7 +32,9 @@ namespace BusinessTravelJobTask.Controllers
         //[Cached(600)]
         public async Task<IActionResult> Filter()
         {
-            var url = "https://api2.mouzenidis.com/search/filter/directions";
+            //var url = "https://api2.mouzenidis.com/search/filter/directions";
+            var url = "https://api2.mouzenidis.com/search/filter";
+
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             //add requestheaders ??...
             var client = _clientFactory.CreateClient();

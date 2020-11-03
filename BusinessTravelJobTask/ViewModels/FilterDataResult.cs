@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using static BusinessTravelJobTask.ViewModels.FilterVm;
+//using static BusinessTravelJobTask.ViewModels.FilterVmOld;
 
 namespace BusinessTravelJobTask.ViewModels
 {
